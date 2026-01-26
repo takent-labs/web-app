@@ -19,10 +19,10 @@ export default function SignInModal({ isOpen, onClose, onSwitch }: SignInModalPr
                             <p className="text-center text-sm text-primary/70 font-normal">Introduce tus datos para continuar</p>
                         </Modal.Header>
                         <Modal.Body>
-                            <SignInForm />
+                            <SignInForm onSuccess={onClose}/>
                         </Modal.Body>
                         <Modal.Footer className="flex flex-col items-center justify-center px-4">
-                            <Button className="w-full" slot="close" onClick={onClose}>
+                            <Button className="w-full" type="submit" form="sign-in-form">
                                 Acceder
                             </Button>
                             <Button variant="link" size="sm" className="w-full text-sm font-normal text-primary/70" onClick={onSwitch}>

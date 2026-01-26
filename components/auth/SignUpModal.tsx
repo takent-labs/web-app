@@ -19,10 +19,10 @@ export default function SignUpModal({ isOpen, onClose, onSwitch }: SignUpModalPr
                             <p className="text-center text-sm text-primary/70 font-normal">Introduce tus datos para continuar</p>
                         </Modal.Header>
                         <Modal.Body>
-                            <SignUpForm />
+                            <SignUpForm onSuccess={onClose}/>
                         </Modal.Body>
                         <Modal.Footer className="flex flex-col items-center justify-center px-4">
-                            <Button className="w-full" slot="close">
+                            <Button className="w-full" type="submit" form="sign-up-form">
                                 Crear cuenta
                             </Button>
                             <Button variant="link" size="sm" className="w-full text-sm font-normal text-primary/70" onClick={onSwitch}>

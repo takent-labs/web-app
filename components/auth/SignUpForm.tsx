@@ -1,18 +1,69 @@
 import { InputGroup, Label, Modal, Separator, TextField } from "@heroui/react";
-import { AtSignIcon, EyeClosedIcon, Layers, User2Icon } from 'lucide-react';
+import { AtSignIcon, EyeClosedIcon, EyeIcon, Layers, User2Icon } from 'lucide-react';
 import { Button } from '../ui/button';
 import { Apple } from "../ui/svgs/apple";
 import { Google } from "../ui/svgs/google";
+import * as z from "zod"
+import { useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useState } from "react";
 
-export default function SignUpForm() {
+const signUpSchema = z.object({
+    first_name: z.string().min(1, "Campo obligatorio.").max(50, "El nombre debe tener menos de 50 caracteres."),
+    last_name: z.string().min(1, "Campo obligatorio.").max(50, "El apellido debe tener menos de 50 caracteres."),
+    username: z.string().min(1, "Campo obligatorio.").max(50, "El usuario debe tener menos de 50 caracteres."),
+    email: z
+        .email({ pattern: z.regexes.email })
+        .min(1, "Campo obligatorio."),
+    password: z
+        .string()
+        .min(8, "La contraseña debe tener al menos 8 caracteres.")
+})
+
+export default function SignUpForm({ onSuccess }: { onSuccess: () => void }) {
+
+    const [isVisible, setIsVisible] = useState(false);
+
+    const {
+        register,
+        handleSubmit,
+        formState: { errors, isSubmitting }
+    } = useForm<z.infer<typeof signUpSchema>>({
+        resolver: zodResolver(signUpSchema),
+        defaultValues: {
+            first_name: "",
+            last_name: "",
+            username: "",
+            email: "",
+            password: "",
+        },
+    })
+
+    const onSubmit = async (data: z.infer<typeof signUpSchema>) => {
+        try {
+            console.log(data)
+            onSuccess();
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    const onSubmitGoogle = async () => {
+        // TODO: Implementar el login con Google
+    }
+
+    const onSubmitApple = async () => {
+        // TODO: Implementar el login con Apple
+    }
+
     return (
-        <form action="" className="flex flex-col gap-4 px-6 py-2">
+        <form id="sign-up-form" onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4 px-6 py-2">
 
             <div className="flex w-full gap-2">
-                <Button variant="secondary" size="icon-lg" className="flex-1 h-12">
+                <Button type="button" onClick={onSubmitGoogle} variant="secondary" size="icon-lg" className="flex-1 h-12">
                     <Google className="text-primary/70" />
                 </Button>
-                <Button variant="secondary" size="icon-lg" className="flex-1 h-12">
+                <Button type="button" onClick={onSubmitApple} variant="secondary" size="icon-lg" className="flex-1 h-12">
                     <Apple className="text-primary/70" />
                 </Button>
             </div>
@@ -29,19 +80,23 @@ export default function SignUpForm() {
                         <Label className="text-primary/70 mb-1.5 block">Nombre</Label>
                         <InputGroup>
                             <InputGroup.Input
+                                {...register("first_name")}
                                 className="w-full bg-secondary h-12 px-4 rounded-l-xl"
                                 placeholder="Manuel"
                             />
                         </InputGroup>
+                        {errors.first_name && <p className="text-xs text-red-500">{errors.first_name.message}</p>}
                     </TextField>
                     <TextField className="w-full" name="last_name">
                         <Label className="text-primary/70 mb-1.5 block">Apellidos</Label>
                         <InputGroup>
                             <InputGroup.Input
+                                {...register("last_name")}
                                 className="w-full bg-secondary h-12 px-4 rounded-l-xl"
                                 placeholder="García López"
                             />
                         </InputGroup>
+                        {errors.last_name && <p className="text-xs text-red-500">{errors.last_name.message}</p>}
                     </TextField>
                 </div>
 
@@ -49,26 +104,30 @@ export default function SignUpForm() {
                     <Label className="text-primary/70 mb-1.5 block">Usuario</Label>
                     <InputGroup>
                         <InputGroup.Input
+                            {...register("username")}
                             className="w-full bg-secondary h-12 px-4 rounded-l-xl"
-                            placeholder="jhondoe"
+                            placeholder="manuel_234"
                         />
                         <InputGroup.Suffix className="bg-secondary pr-4 rounded-r-xl">
                             <User2Icon className="size-4 text-primary/70 h-12" />
                         </InputGroup.Suffix>
                     </InputGroup>
+                    {errors.username && <p className="text-xs text-red-500">{errors.username.message}</p>}
                 </TextField>
 
                 <TextField className="w-full" name="email">
                     <Label className="text-primary/70 mb-1.5 block">Email</Label>
                     <InputGroup>
                         <InputGroup.Input
+                            {...register("email")}
                             className="w-full bg-secondary h-12 px-4 rounded-l-xl"
-                            placeholder="jhondoe@gmail.com"
+                            placeholder="manuel234@gmail.com"
                         />
                         <InputGroup.Suffix className="bg-secondary pr-4 rounded-r-xl">
                             <AtSignIcon className="size-4 text-primary/70 h-12" />
                         </InputGroup.Suffix>
                     </InputGroup>
+                    {errors.email && <p className="text-xs text-red-500">{errors.email.message}</p>}
                 </TextField>
 
                 <TextField className="w-full" name="password">
@@ -84,14 +143,24 @@ export default function SignUpForm() {
                     </div>
                     <InputGroup>
                         <InputGroup.Input
+                            {...register("password")}
                             className="w-full bg-secondary h-12 px-4 rounded-l-xl"
                             placeholder="********"
-                            type="password"
+                            type={isVisible ? "text" : "password"}
+
                         />
                         <InputGroup.Suffix className="bg-secondary pr-4 rounded-r-xl">
-                            <EyeClosedIcon className="size-4 text-primary/70 h-12" />
+                            <button
+                                className="hover:cursor-pointer"
+                                type="button"
+                                aria-label={isVisible ? "Ocultar contraseña" : "Mostrar contraseña"}
+                                onClick={() => setIsVisible(!isVisible)}
+                            >
+                                {isVisible ? <EyeIcon className="size-4 text-primary/70 h-12" /> : <EyeClosedIcon className="size-4 text-primary/70 h-12" />}
+                            </button>
                         </InputGroup.Suffix>
                     </InputGroup>
+                    {errors.password && <p className="text-xs text-red-500">{errors.password.message}</p>}
                 </TextField>
             </div>
         </form>
