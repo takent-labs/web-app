@@ -6,10 +6,12 @@ import { Button } from '../ui/button'
 import { useEffect, useState } from 'react'
 import { Layers } from 'lucide-react'
 import { useAuth } from '@/context/AuthContext'
+import { useTheme } from 'next-themes'
+import Logo from '../Logo'
 
 export default function NavigationBar() {
     const { openSignIn } = useAuth()
-
+    const theme = useTheme()
     const [isScrolled, setIsScrolled] = useState(false)
 
     useEffect(() => {
@@ -33,14 +35,7 @@ export default function NavigationBar() {
             `}
         >
             <nav className="flex items-center max-w-8xl mx-auto p-8 justify-between">
-                <a href="/" className="text-2xl font-extrabold flex items-center gap-2">
-                    <img
-                        src="logo.png"
-                        alt="takent logo"
-                        className="h-14 w-auto rounded-xl"
-                    />
-                    Takent.
-                </a>
+                <Logo />
 
                 <div className="flex items-center gap-2">
 

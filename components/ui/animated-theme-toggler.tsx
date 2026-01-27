@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react"
 import { Moon, Sun } from "lucide-react"
 import { flushSync } from "react-dom"
+import { useTheme } from "next-themes"
 
 import { cn } from "@/lib/utils"
 import { Button } from "./button"
@@ -16,34 +17,23 @@ export const AnimatedThemeToggler = ({
   duration = 400,
   ...props
 }: AnimatedThemeTogglerProps) => {
+  const { resolvedTheme, setTheme } = useTheme()
   const [isDark, setIsDark] = useState(false)
   const buttonRef = useRef<HTMLButtonElement>(null)
 
   useEffect(() => {
-    const updateTheme = () => {
-      setIsDark(document.documentElement.classList.contains("dark"))
-    }
-
-    updateTheme()
-
-    const observer = new MutationObserver(updateTheme)
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ["class"],
-    })
-
-    return () => observer.disconnect()
-  }, [])
+    setIsDark(resolvedTheme === "dark")
+  }, [resolvedTheme])
 
   const toggleTheme = useCallback(async () => {
     if (!buttonRef.current) return
 
+    const newTheme = !isDark ? "dark" : "light"
+
     await document.startViewTransition(() => {
       flushSync(() => {
-        const newTheme = !isDark
-        setIsDark(newTheme)
-        document.documentElement.classList.toggle("dark")
-        localStorage.setItem("theme", newTheme ? "dark" : "light")
+        setIsDark(!isDark)
+        setTheme(newTheme)
       })
     }).ready
 
@@ -73,11 +63,11 @@ export const AnimatedThemeToggler = ({
 
   return (
     <Button
-    variant="ghost"
+      variant="ghost"
       ref={buttonRef}
       onClick={toggleTheme}
     >
-      {isDark ? <Sun size={18} strokeWidth={3}/> : <Moon size={18} strokeWidth={3}/>}
+      {isDark ? <Sun size={18} strokeWidth={3} /> : <Moon size={18} strokeWidth={3} />}
       <span className="sr-only">Tema</span>
     </Button>
   )
