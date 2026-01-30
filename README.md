@@ -1,36 +1,9 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Takent Web App
 
-## Getting Started
-
-First, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+> [!IMPORTANT]
+> **Justificación de la elección tecnológica**
+> Para cumplir con el objetivo de desarrollar una "Web SPA (Single-Page Application) accesible desde distintos navegadores":
+> - **Basado en lo aprendido:** El proyecto utiliza **NextJS**, que se basa totalmente en **JavaScript, Node.js, HTML y CSS**, tecnologías que ya hemos trabajado en clase.
+> - **TypeScript es JavaScript:** He decidido usar TypeScript porque es un "superset" de JavaScript (en esencia, todo el código TS es JS). Esto me permite asegurar una "funcionalidad técnica sin errores críticos", algo clave para asegurar el 20% de la nota de funcionalidad.
+> - **Entorno laboral real:** Esta combinación permite unificar el lenguaje con el backend, dándome una rapidez de desarrollo fundamental en el mundo profesional que me ayuda a cumplir con los plazos.
+> - **Libertad de diseño:** Me baso en lo que indica el documento de especificaciones: "el diseño será abierto de forma que el alumno tome sus propias decisiones".
