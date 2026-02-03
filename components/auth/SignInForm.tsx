@@ -44,7 +44,6 @@ export default function SignInForm({ onSuccess }: { onSuccess: () => void }) {
         }
     }
 
-
     const onSubmitGoogle = () => {
         // TODO: Implementar el login con Google
     }
@@ -54,7 +53,7 @@ export default function SignInForm({ onSuccess }: { onSuccess: () => void }) {
     }
 
     return (
-        <form id="sign-in-form" onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4 px-6 py-2">
+        <form id="sign-in-form" onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4 px-4 py-2">
             <div className="flex w-full gap-2">
                 <Button type="button" onClick={onSubmitGoogle} variant="secondary" size="icon-lg" className="flex-1 h-12">
                     <Google className="text-primary/70" />

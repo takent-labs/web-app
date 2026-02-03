@@ -61,7 +61,7 @@ export default function RootLayout({
       <body
         className={`${generalSans.className} antialiased`}
       >
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+        <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
           <AuthProvider>
             <AuthModals />
             <LayoutShell>

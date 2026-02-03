@@ -9,8 +9,8 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useState } from "react";
 
 const signUpSchema = z.object({
-    first_name: z.string().min(1, "Campo obligatorio.").max(50, "El nombre debe tener menos de 50 caracteres."),
-    last_name: z.string().min(1, "Campo obligatorio.").max(50, "El apellido debe tener menos de 50 caracteres."),
+    firstName: z.string().min(1, "Campo obligatorio.").max(50, "El nombre debe tener menos de 50 caracteres."),
+    lastName: z.string().min(1, "Campo obligatorio.").max(50, "El apellido debe tener menos de 50 caracteres."),
     username: z.string().min(1, "Campo obligatorio.").max(50, "El usuario debe tener menos de 50 caracteres."),
     email: z
         .email({ pattern: z.regexes.email })
@@ -31,8 +31,8 @@ export default function SignUpForm({ onSuccess }: { onSuccess: () => void }) {
     } = useForm<z.infer<typeof signUpSchema>>({
         resolver: zodResolver(signUpSchema),
         defaultValues: {
-            first_name: "",
-            last_name: "",
+            firstName: "",
+            lastName: "",
             username: "",
             email: "",
             password: "",
@@ -41,7 +41,19 @@ export default function SignUpForm({ onSuccess }: { onSuccess: () => void }) {
 
     const onSubmit = async (data: z.infer<typeof signUpSchema>) => {
         try {
-            console.log(data)
+            const response = await fetch("/api/auth/signup", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(data)
+            })
+
+            if (!response.ok) {
+                const error = await response.json();
+                throw new Error(error.message || "Error al registrar el usuario");
+            }
+
+            console.log("Usuario registrado");
+
             onSuccess();
         } catch (error) {
             console.log(error)
@@ -57,7 +69,7 @@ export default function SignUpForm({ onSuccess }: { onSuccess: () => void }) {
     }
 
     return (
-        <form id="sign-up-form" onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4 px-6 py-2">
+        <form id="sign-up-form" onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4 px-4 py-2">
 
             <div className="flex w-full gap-2">
                 <Button type="button" onClick={onSubmitGoogle} variant="secondary" size="icon-lg" className="flex-1 h-12">
@@ -80,23 +92,23 @@ export default function SignUpForm({ onSuccess }: { onSuccess: () => void }) {
                         <Label className="text-primary/70 mb-1.5 block">Nombre</Label>
                         <InputGroup>
                             <InputGroup.Input
-                                {...register("first_name")}
+                                {...register("firstName")}
                                 className="w-full bg-secondary h-12 px-4 rounded-l-xl"
                                 placeholder="Manuel"
                             />
                         </InputGroup>
-                        {errors.first_name && <p className="text-xs text-red-500">{errors.first_name.message}</p>}
+                        {errors.firstName && <p className="text-xs text-red-500">{errors.firstName.message}</p>}
                     </TextField>
                     <TextField className="w-full" name="last_name">
                         <Label className="text-primary/70 mb-1.5 block">Apellidos</Label>
                         <InputGroup>
                             <InputGroup.Input
-                                {...register("last_name")}
+                                {...register("lastName")}
                                 className="w-full bg-secondary h-12 px-4 rounded-l-xl"
                                 placeholder="García López"
                             />
                         </InputGroup>
-                        {errors.last_name && <p className="text-xs text-red-500">{errors.last_name.message}</p>}
+                        {errors.lastName && <p className="text-xs text-red-500">{errors.lastName.message}</p>}
                     </TextField>
                 </div>
 
