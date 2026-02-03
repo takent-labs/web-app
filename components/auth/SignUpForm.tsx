@@ -40,6 +40,8 @@ export default function SignUpForm({ onSuccess }: { onSuccess: () => void }) {
     })
 
     const onSubmit = async (data: z.infer<typeof signUpSchema>) => {
+
+        //TODO manejar errores especificos y no genéricos
         try {
             const response = await fetch("/api/auth/signup", {
                 method: "POST",
@@ -52,8 +54,6 @@ export default function SignUpForm({ onSuccess }: { onSuccess: () => void }) {
                 throw new Error(error.message || "Error al registrar el usuario");
             }
 
-            console.log("Usuario registrado");
-
             onSuccess();
         } catch (error) {
             console.log(error)
@@ -61,11 +61,11 @@ export default function SignUpForm({ onSuccess }: { onSuccess: () => void }) {
     }
 
     const onSubmitGoogle = async () => {
-        // TODO: Implementar el login con Google
+        // Implementar el login con Google
     }
 
     const onSubmitApple = async () => {
-        // TODO: Implementar el login con Apple
+        // Implementar el login con Apple
     }
 
     return (

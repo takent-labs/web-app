@@ -35,9 +35,22 @@ export default function SignInForm({ onSuccess }: { onSuccess: () => void }) {
     })
 
     const onSubmit = async (data: z.infer<typeof signInSchema>) => {
-        // TODO: Implementar el login
+
+        //TODO manejar errores específicos y no genéricos
         try {
-            console.log(data)
+            const response = await fetch("/api/auth/signin", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(data),
+            })
+
+            if (!response.ok) {
+                const error = await response.json();
+                throw new Error(error.message || "Error al iniciar sesión");
+            }
+
             onSuccess();
         } catch (error) {
             console.log(error)
@@ -45,11 +58,11 @@ export default function SignInForm({ onSuccess }: { onSuccess: () => void }) {
     }
 
     const onSubmitGoogle = () => {
-        // TODO: Implementar el login con Google
+        //Implementar el login con Google
     }
 
     const onSubmitApple = () => {
-        // TODO: Implementar el login con Apple
+        //Implementar el login con Apple
     }
 
     return (

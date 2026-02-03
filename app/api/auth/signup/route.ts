@@ -1,3 +1,5 @@
+"use server"
+
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
@@ -6,7 +8,7 @@ export async function POST(request: Request) {
 
         const body = await request.json()
 
-        const res = await fetch(`${process.env.NESTJS_API_URL}/auth/sign-up`, {
+        const res = await fetch(`${process.env.NEXTJS_API_URL}/auth/sign-up`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(body),
@@ -32,12 +34,11 @@ export async function POST(request: Request) {
         })
 
         return NextResponse.json({
-            message: "Usuario registrado exitosamente",
+            message: "Usuario registrado",
             user: data.user
         }, { status: 201 });
 
     } catch (error) {
-        console.log(error)
         return NextResponse.json({ message: "Error interno del servidor" }, { status: 500 });
     }
 }
