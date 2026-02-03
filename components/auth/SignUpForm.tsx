@@ -7,6 +7,7 @@ import * as z from "zod"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 const signUpSchema = z.object({
     firstName: z.string().min(1, "Campo obligatorio.").max(50, "El nombre debe tener menos de 50 caracteres."),
@@ -22,6 +23,7 @@ const signUpSchema = z.object({
 
 export default function SignUpForm({ onSuccess }: { onSuccess: () => void }) {
 
+    const router = useRouter();
     const [isVisible, setIsVisible] = useState(false);
 
     const {
@@ -55,6 +57,9 @@ export default function SignUpForm({ onSuccess }: { onSuccess: () => void }) {
             }
 
             onSuccess();
+
+            router.refresh();
+            router.push("/dashboard/feed")
         } catch (error) {
             console.log(error)
         }

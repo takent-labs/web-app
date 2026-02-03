@@ -8,6 +8,7 @@ import { Google } from "../ui/svgs/google";
 import * as z from "zod"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { useRouter } from 'next/navigation';
 
 const signInSchema = z.object({
     email: z
@@ -20,6 +21,7 @@ const signInSchema = z.object({
 
 export default function SignInForm({ onSuccess }: { onSuccess: () => void }) {
 
+    const router = useRouter();
     const [isVisible, setIsVisible] = useState(false);
 
     const {
@@ -52,6 +54,9 @@ export default function SignInForm({ onSuccess }: { onSuccess: () => void }) {
             }
 
             onSuccess();
+
+            router.refresh();
+            router.push("/dashboard/feed")
         } catch (error) {
             console.log(error)
         }
