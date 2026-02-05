@@ -13,3 +13,9 @@ https://nextjs.org/docs/app/getting-started/route-handlers
 
 almacenamiento de cookies (Nunca en el local Storage solo en el servidor con httponly)
 https://nextjs.org/docs/app/api-reference/functions/cookies
+
+proxy
+https://nextjs.org/docs/app/api-reference/file-conventions/proxy
+
+gestion de estado global:
+https://zustand.docs.pmnd.rs/getting-started/introduction
