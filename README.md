@@ -8,6 +8,17 @@
 > - **Entorno laboral real:** Esta combinación permite unificar el lenguaje con el backend, dándome una rapidez de desarrollo fundamental en el mundo profesional que me ayuda a cumplir con los plazos.
 > - **Libertad de diseño:** Me baso en lo que indica el documento de especificaciones: "el diseño será abierto de forma que el alumno tome sus propias decisiones".
 
+librerias: 
+zustand
+magic-ui
+shadcn/ui
+hero/ui
+zod
+gsap
+react-hook-forms
+
+validacion de formularios:
+https://zod.dev
 peticiones a la api (Routes)
 https://nextjs.org/docs/app/getting-started/route-handlers
 

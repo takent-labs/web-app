@@ -8,6 +8,7 @@ import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useBoundStore } from "@/store/store";
 
 const signUpSchema = z.object({
     firstName: z.string().min(1, "Campo obligatorio.").max(50, "El nombre debe tener menos de 50 caracteres."),
@@ -23,6 +24,7 @@ const signUpSchema = z.object({
 
 export default function SignUpForm({ onSuccess }: { onSuccess: () => void }) {
 
+    const setUser = useBoundStore((state) => state.setUser);
     const router = useRouter();
     const [isVisible, setIsVisible] = useState(false);
 
@@ -51,12 +53,19 @@ export default function SignUpForm({ onSuccess }: { onSuccess: () => void }) {
                 body: JSON.stringify(data)
             })
 
+            const result = await response.json();
+
             if (!response.ok) {
-                const error = await response.json();
-                throw new Error(error.message || "Error al registrar el usuario");
+                throw new Error(result.message || "Error al registrar el usuario");
             }
 
             onSuccess();
+
+            setUser({
+                id: result.user.id,
+                username: result.user.username,
+                email: result.user.email,
+            })
 
             router.refresh();
             router.push("/dashboard/feed")

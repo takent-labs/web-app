@@ -16,6 +16,7 @@ import {
 import { Dock, DockIcon } from "../ui/dock"
 import { AnimatedThemeToggler } from "../ui/animated-theme-toggler"
 import { Avatar } from "@heroui/react"
+import { useBoundStore } from "@/store/store"
 
 export type IconProps = React.HTMLAttributes<SVGElement>
 
@@ -95,6 +96,8 @@ const DATA = {
 }
 
 export function NavDock() {
+    const user = useBoundStore((state) => state.user);
+
     return (
         <div className="flex flex-col items-center justify-center sticky bottom-0 z-50 pb-6">
             <TooltipProvider>
@@ -148,12 +151,12 @@ export function NavDock() {
                             <div className="py-2">
                                 <Avatar size="sm" className="cursor-pointer">
                                     <Avatar.Image src="#" />
-                                    <Avatar.Fallback>ÓR</Avatar.Fallback>
+                                    <Avatar.Fallback>{user?.username.slice(0, 2).toUpperCase()}</Avatar.Fallback>
                                 </Avatar>
                             </div>
                         </TooltipTrigger>
                         <TooltipContent>
-                            <p>Perfil</p>
+                            <p>{user?.username}</p>
                         </TooltipContent>
                     </Tooltip>
                 </Dock>

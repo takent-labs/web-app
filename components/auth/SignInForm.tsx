@@ -9,6 +9,7 @@ import * as z from "zod"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useRouter } from 'next/navigation';
+import { useBoundStore } from '@/store/store';
 
 const signInSchema = z.object({
     email: z
@@ -21,6 +22,7 @@ const signInSchema = z.object({
 
 export default function SignInForm({ onSuccess }: { onSuccess: () => void }) {
 
+    const setUser = useBoundStore((state) => state.setUser);
     const router = useRouter();
     const [isVisible, setIsVisible] = useState(false);
 
@@ -48,12 +50,19 @@ export default function SignInForm({ onSuccess }: { onSuccess: () => void }) {
                 body: JSON.stringify(data),
             })
 
+            const result = await response.json();
+
             if (!response.ok) {
-                const error = await response.json();
-                throw new Error(error.message || "Error al iniciar sesión");
+                throw new Error(result.message || "Error al iniciar sesión");
             }
 
             onSuccess();
+
+            setUser({
+                id: result.user.id,
+                username: result.user.username,
+                email: result.user.email,
+            })
 
             router.refresh();
             router.push("/dashboard/feed")
