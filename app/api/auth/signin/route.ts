@@ -19,7 +19,7 @@ export async function POST(request: Request) {
             return NextResponse.json(data, { status: res.status });
         }
 
-        const token = data.access_token;
+        const token = data.accessToken;
 
         const cookieStore = await cookies();
 
@@ -28,7 +28,7 @@ export async function POST(request: Request) {
             secure: process.env.NODE_ENV === "production",
             sameSite: "strict",
             //TODO cambiar en producción
-            maxAge: 60,
+            maxAge: 7200,
             path: "/",
         })
 

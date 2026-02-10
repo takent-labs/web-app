@@ -20,7 +20,7 @@ export async function POST(request: Request) {
             return NextResponse.json(data, { status: res.status });
         }
 
-        const token = data.access_token;
+        const token = data.accessToken;
 
         const cookieStore = await cookies();
 
