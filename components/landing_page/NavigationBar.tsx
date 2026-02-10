@@ -6,12 +6,10 @@ import { Button } from '../ui/button'
 import { useEffect, useState } from 'react'
 import { Layers } from 'lucide-react'
 import { useAuth } from '@/context/AuthContext'
-import { useTheme } from 'next-themes'
 import Logo from '../Logo'
 
 export default function NavigationBar() {
     const { openSignIn } = useAuth()
-    const theme = useTheme()
     const [isScrolled, setIsScrolled] = useState(false)
 
     useEffect(() => {

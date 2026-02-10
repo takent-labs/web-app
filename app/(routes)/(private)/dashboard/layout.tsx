@@ -1,3 +1,4 @@
+import Header from "@/components/dashboard/Header";
 import { NavDock } from "@/components/dashboard/NavDock";
 
 export default function DashboardLayout({
@@ -6,7 +7,8 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <main>
+    <main className="">
+      <Header />
       {children}
       <NavDock />
     </main>
