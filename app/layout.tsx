@@ -1,21 +1,11 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { LayoutShell } from "@/components/LayoutShell";
 import { AuthProvider } from "@/context/AuthContext";
 import AuthModals from "@/components/auth/AuthModals";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+import { Toaster } from "@/components/ui/sonner"
 
 const generalSans = localFont({
   src: [
@@ -65,6 +55,7 @@ export default function RootLayout({
           <AuthProvider>
             <AuthModals />
             <LayoutShell>
+              <Toaster position="bottom-right" richColors/>
               {children}
             </LayoutShell>
           </AuthProvider>

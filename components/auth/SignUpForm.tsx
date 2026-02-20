@@ -9,6 +9,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useBoundStore } from "@/store/store";
+import { toast } from "sonner";
 
 const signUpSchema = z.object({
     firstName: z.string().min(1, "Campo obligatorio.").max(50, "El nombre debe tener menos de 50 caracteres."),
@@ -44,8 +45,6 @@ export default function SignUpForm({ onSuccess }: { onSuccess: () => void }) {
     })
 
     const onSubmit = async (data: z.infer<typeof signUpSchema>) => {
-
-        //TODO manejar errores especificos y no genéricos
         try {
             const response = await fetch("/api/auth/signup", {
                 method: "POST",
@@ -56,7 +55,14 @@ export default function SignUpForm({ onSuccess }: { onSuccess: () => void }) {
             const result = await response.json();
 
             if (!response.ok) {
-                throw new Error(result.message || "Error al registrar el usuario");
+                switch (response.status) {
+                    case 400:
+                        throw new Error("Este usuario se encuentra en uso.");
+                    case 500:
+                        throw new Error("Error en el servidor. Estamos trabajando en ello.");
+                    default:
+                        throw new Error(result.message || "Error al registrar el usuario");
+                }
             }
 
             onSuccess();
@@ -70,7 +76,11 @@ export default function SignUpForm({ onSuccess }: { onSuccess: () => void }) {
             router.refresh();
             router.push("/dashboard/feed")
         } catch (error) {
-            console.log(error)
+            if (error instanceof Error) {
+                toast.error(error.message);
+            } else {
+                toast.error("Ocurrió un error inesperado");
+            }
         }
     }
 

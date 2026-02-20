@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-import { InputGroup, Label, Modal, Separator, TextField } from "@heroui/react";
+import { InputGroup, Label, Modal, Separator, TextField, Toast } from "@heroui/react";
 import { AtSignIcon, EyeClosedIcon, EyeIcon } from 'lucide-react';
 import { Button } from '../ui/button';
 import { Apple } from "../ui/svgs/apple";
@@ -10,6 +10,7 @@ import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useRouter } from 'next/navigation';
 import { useBoundStore } from '@/store/store';
+import { toast } from 'sonner';
 
 const signInSchema = z.object({
     email: z
@@ -39,8 +40,6 @@ export default function SignInForm({ onSuccess }: { onSuccess: () => void }) {
     })
 
     const onSubmit = async (data: z.infer<typeof signInSchema>) => {
-
-        //TODO manejar errores específicos y no genéricos
         try {
             const response = await fetch("/api/auth/signin", {
                 method: "POST",
@@ -53,7 +52,16 @@ export default function SignInForm({ onSuccess }: { onSuccess: () => void }) {
             const result = await response.json();
 
             if (!response.ok) {
-                throw new Error(result.message || "Error al iniciar sesión");
+                switch (response.status) {
+                    case 401:
+                        throw new Error("Correo o contraseña incorrectos");
+                    case 404:
+                        throw new Error("Este usuario no ha sido registrado");
+                    case 500:
+                        throw new Error("Error en el servidor. Estamos trabajando en ello.");
+                    default:
+                        throw new Error(result.message || "Error al iniciar sesión");
+                }
             }
 
             onSuccess();
@@ -67,7 +75,11 @@ export default function SignInForm({ onSuccess }: { onSuccess: () => void }) {
             router.refresh();
             router.push("/dashboard/feed")
         } catch (error) {
-            console.log(error)
+            if (error instanceof Error) {
+                toast.error(error.message);
+            } else {
+                toast.error("Ocurrió un error inesperado");
+            }
         }
     }
 
