@@ -16,6 +16,7 @@ import {
 import { Dock, DockIcon } from "../ui/dock"
 import { Avatar, Dropdown, Label } from "@heroui/react"
 import { useBoundStore } from "@/store/store"
+import { logOut } from "@/lib/auth"
 
 export type IconProps = React.HTMLAttributes<SVGElement>
 
@@ -105,7 +106,7 @@ export function NavDock() {
                                         <Settings className="size-3.5 text-foreground/60" />
                                     </div>
                                 </Dropdown.Item>
-                                <Dropdown.Item id="logout" textValue="Logout" variant="danger" className="rounded-lg hover:bg-foreground/10">
+                                <Dropdown.Item id="logout" textValue="Logout" variant="danger" className="rounded-lg hover:bg-foreground/10" onClick={logOut}>
                                     <div className="flex w-full items-center justify-between gap-2">
                                         <Label>Cerrar Sesión</Label>
                                         <ArrowUpRightFromSquare className="size-3.5 text-danger" />
